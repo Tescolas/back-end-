@@ -1,0 +1,40 @@
+const express = require('express');
+const db = require('./db');
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+
+// Rota principal
+app.get('/', (req, res) => {
+  res.send('Olá Mundo do Back-End!');
+});
+
+// Rota para salvar uma nova mensagem
+app.post('/mensagem', (req, res) => {
+  const { texto } = req.body;
+  if (!texto) {
+    return res.status(400).json({ erro: 'Texto é obrigatório.' });
+  }
+
+  db.run('INSERT INTO mensagens (texto) VALUES (?)', [texto], function (err) {
+    if (err) {
+      return res.status(500).json({ erro: err.message });
+    }
+    res.status(201).json({ id: this.lastID, texto });
+  });
+});
+
+// Rota para listar todas as mensagens
+app.get('/mensagens', (req, res) => {
+  db.all('SELECT * FROM mensagens ORDER BY criado_em DESC', [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ erro: err.message });
+    }
+    res.json(rows);
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Servidor rodando em http://localhost:${port}`);
+});
