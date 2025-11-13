@@ -1,0 +1,15 @@
+{
+  "name": "ola-backend",
+  "version": "1.0.0",
+  "description": "API simples com Node.js e Express",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["node", "express", "api", "backend"],
+  "author": "Luisa",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
